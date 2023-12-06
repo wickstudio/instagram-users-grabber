@@ -1,7 +1,7 @@
 @echo off
 
 echo Installing required Python packages...
-pip install colorama pyfiglet selenium os sys
+pip install colorama pyfiglet selenium
 
 echo Installation complete!
 pause
