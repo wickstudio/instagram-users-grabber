@@ -29,6 +29,14 @@ def check_username_availability(username):
         print(f"{Fore.RED}Error checking username {username}: {e}{Style.RESET_ALL}")
         return False
 
+def write_username_to_file(file_path, username):
+    folder_path = "usernames"
+    os.makedirs(folder_path, exist_ok=True)
+    full_path = os.path.join(folder_path, file_path)
+    
+    with open(full_path, "a") as file:
+        file.write(username + "\n")
+
 def sort_usernames(usernames):
     available_usernames = []
     unavailable_usernames = []
@@ -36,19 +44,12 @@ def sort_usernames(usernames):
     for username in usernames:
         if check_username_availability(username):
             available_usernames.append(username)
+            write_username_to_file("available_usernames.txt", username)
         else:
             unavailable_usernames.append(username)
+            write_username_to_file("unavailable_usernames.txt", username)
 
     return available_usernames, unavailable_usernames
-
-def write_usernames_to_file(file_path, usernames):
-    folder_path = "usernames"
-    os.makedirs(folder_path, exist_ok=True)
-    full_path = os.path.join(folder_path, file_path)
-    
-    with open(full_path, "w") as file:
-        for username in usernames:
-            file.write(username + "\n")
 
 def read_usernames_from_file(file_path):
     with open(file_path, "r") as file:
@@ -71,8 +72,6 @@ def user_menu():
 def check_usernames():
     usernames_to_check = read_usernames_from_file("file.txt")
     available, unavailable = sort_usernames(usernames_to_check)
-    write_usernames_to_file("available_usernames.txt", available)
-    write_usernames_to_file("unavailable_usernames.txt", unavailable)
     print(f"{Fore.GREEN}Checked {len(usernames_to_check)} usernames.{Style.RESET_ALL}")
     print(f"{Fore.BLUE}Available Usernames: {len(available)}{Style.RESET_ALL}")
     print(f"{Fore.YELLOW}Unavailable Usernames: {len(unavailable)}{Style.RESET_ALL}")
